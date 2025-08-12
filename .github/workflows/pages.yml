@@ -1,4 +1,4 @@
-name: Deploy Expo Web to GitHub Pages
+name: Deploy web to GitHub Pages
 
 on:
   push:
@@ -11,37 +11,79 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      # Robust fix for "fatal: detected dubious ownership" (exit 128)
+      - name: Make git dirs safe + show config
+        shell: bash
+        run: |
+          set -eux
+          git --version
+          echo "WS=$GITHUB_WORKSPACE"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE" || true
+          git config --global --add safe.directory /github/workspace || true
+          git config --global --add safe.directory '*' || true
+          git config --global --list --show-origin || true
+          git rev-parse --show-toplevel || true
+          git status || true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - run: npm ci
-
-      # Build a static web bundle under dist/
-      - name: Build web (Expo)
-        run: npm run build:web
-        env:
-          # Ensure asset URLs are under /trade-journal/
-          PUBLIC_URL: /trade-journal/
-
-      # Add SPA fallback + MSW file + nojekyll
-      - name: Prepare artifact
+      # Quick env + tool smoke test
+      - name: Diagnose environment
+        shell: bash
         run: |
-          cp public/mockServiceWorker.js dist/mockServiceWorker.js || true
-          cp dist/index.html dist/404.html
-          touch dist/.nojekyll
+          set -eux
+          which git
+          git --version
+          node -v
+          npm -v
+          ls -al
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Install deps (CI guards)
+        env:
+          HUSKY: 0
+          ADBLOCK: 1
+          npm_config_fund: false
+          npm_config_audit: false
+        run: npm ci --no-audit --no-fund --verbose
+
+      - name: Build (Expo export)
+        env:
+          CI: true
+        run: npx expo export --platform web --output-dir dist --public-url ./
+
+      - name: Ensure MSW worker exists
+        run: |
+          set -eux
+          if [ ! -f dist/mockServiceWorker.js ]; then
+            for f in web/mockServiceWorker.js public/mockServiceWorker.js; do
+              if [ -f "$f" ]; then cp "$f" dist/; fi
+            done
+          fi
+
+      - name: Add SPA 404.html
+        run: |
+          [ -f dist/404.html ] || cp dist/index.html dist/404.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
