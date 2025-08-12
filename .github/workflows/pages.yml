@@ -1,4 +1,4 @@
-name: Deploy Expo Web to GitHub Pages
+name: Deploy web to GitHub Pages
 
 on:
   push:
@@ -18,30 +18,43 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Expo sometimes reads git metadata; give it full history to avoid warnings.
+          fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-      # Build a static web bundle under dist/
-      - name: Build web (Expo)
-        run: npm run build:web
-        env:
-          # Ensure asset URLs are under /trade-journal/
-          PUBLIC_URL: /trade-journal/
+      - name: Build (Expo web export with relative URLs)
+        run: npx expo export --platform web --output-dir dist --public-url ./
 
-      # Add SPA fallback + MSW file + nojekyll
-      - name: Prepare artifact
+      - name: Ensure MSW worker is copied to dist
         run: |
-          cp public/mockServiceWorker.js dist/mockServiceWorker.js || true
-          cp dist/index.html dist/404.html
-          touch dist/.nojekyll
+          set -eux
+          if [ ! -f dist/mockServiceWorker.js ]; then
+            if [ -f web/mockServiceWorker.js ]; then
+              cp web/mockServiceWorker.js dist/
+            elif [ -f public/mockServiceWorker.js ]; then
+              cp public/mockServiceWorker.js dist/
+            fi
+          fi
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Add SPA 404 fallback
+        run: |
+          if [ ! -f dist/404.html ]; then
+            cp dist/index.html dist/404.html
+          fi
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
