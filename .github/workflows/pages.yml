@@ -1,8 +1,8 @@
-name: Deploy web to GitHub Pages
+name: Deploy Expo Web to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -17,95 +17,40 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - name: Print package.json (debug)
-        run: |
-          node -v
-          npm -v
-          cat package.json || true
+      - run: npm ci
 
-      - name: Install deps
-        run: npm ci
-
-      # --- Build (Expo Web if available; otherwise fallback to npm run build) ---
-      - name: Build site
+      # Build a static web bundle under dist/
+      - name: Build web (Expo)
+        run: npm run build:web
         env:
-          CI: "true"
-          EXPO_NO_TELEMETRY: "1"
+          # Ensure asset URLs are under /trade-journal/
+          PUBLIC_URL: /trade-journal/
+
+      # Add SPA fallback + MSW file + nojekyll
+      - name: Prepare artifact
         run: |
-          set -euxo pipefail
+          cp public/mockServiceWorker.js dist/mockServiceWorker.js || true
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
 
-          # Try Expo first (project has "expo" key or expo dep)
-          if grep -q '"expo"' package.json 2>/dev/null || npm ls expo --depth=0 >/dev/null 2>&1; then
-            npx --yes expo@latest export -p web --output-dir dist
-          else
-            # Fallback to generic web build
-            if npm run | grep -qE '^  build'; then
-              npm run build
-            else
-              echo "No expo export and no build script found." >&2
-              exit 1
-            fi
-          fi
-
-          # Normalize output dir to ./dist
-          if [ -d dist ]; then
-            echo "Using ./dist"
-          elif [ -d web-build ]; then
-            mv web-build dist
-          elif [ -d build ]; then
-            mv build dist
-          else
-            echo "No known build output folder found." >&2
-            ls -la
-            exit 1
-          fi
-
-          # List result
-          echo "Built files:"
-          ls -la dist | sed 's/^/  /'
-
-      - name: Copy MSW worker + SPA 404
-        run: |
-          set -euxo pipefail
-          mkdir -p dist
-
-          # MSW worker (try both locations)
-          if [ -f public/mockServiceWorker.js ]; then
-            cp public/mockServiceWorker.js dist/mockServiceWorker.js
-          elif [ -f web/mockServiceWorker.js ]; then
-            cp web/mockServiceWorker.js dist/mockServiceWorker.js
-          fi
-
-          # SPA 404: use provided one or clone index.html
-          if [ -f public/404.html ]; then
-            cp public/404.html dist/404.html
-          elif [ -f dist/index.html ]; then
-            cp dist/index.html dist/404.html
-          fi
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
