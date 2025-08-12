@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Robust fix for "fatal: detected dubious ownership" (exit 128)
+      # Be very permissive to avoid "dubious ownership" errors.
       - name: Make git dirs safe + show config
         shell: bash
         run: |
@@ -33,7 +33,10 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE" || true
           git config --global --add safe.directory /github/workspace || true
           git config --global --add safe.directory '*' || true
-          git config --global --list --show-origin
+          git config --global --list --show-origin || true
+          # Basic repo state (will also surface any error here)
+          git rev-parse --show-toplevel || true
+          git status || true
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -41,8 +44,27 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install deps
-        run: npm ci
+      # Extra diagnostics right before install (to catch where git 128 happens)
+      - name: Diagnose environment
+        shell: bash
+        run: |
+          set -eux
+          which git
+          git --version
+          node -v
+          npm -v
+          ls -al
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+
+      - name: Install deps (CI guards)
+        env:
+          # Disable husky/prepare hooks and analytics during CI
+          HUSKY: 0
+          ADBLOCK: 1
+          npm_config_fund: false
+          npm_config_audit: false
+        run: npm ci --no-audit --no-fund --verbose
 
       - name: Build (Expo export)
         env:
