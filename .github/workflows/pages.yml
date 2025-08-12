@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
@@ -23,9 +23,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Fix: avoid "fatal: detected dubious ownership" (exit code 128)
-      - name: Mark workspace as safe Git directory
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      # Robust fix for "fatal: detected dubious ownership" (exit 128)
+      - name: Make git dirs safe + show config
+        shell: bash
+        run: |
+          set -eux
+          git --version
+          echo "WS=$GITHUB_WORKSPACE"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE" || true
+          git config --global --add safe.directory /github/workspace || true
+          git config --global --add safe.directory '*' || true
+          git config --global --list --show-origin
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -33,32 +41,28 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
+      - name: Install deps
         run: npm ci
 
-      - name: Build (Expo export with relative URLs)
+      - name: Build (Expo export)
         env:
           CI: true
         run: npx expo export --platform web --output-dir dist --public-url ./
 
-      - name: Ensure MSW worker is present
+      - name: Ensure MSW worker exists
         run: |
           set -eux
           if [ ! -f dist/mockServiceWorker.js ]; then
-            if [ -f web/mockServiceWorker.js ]; then
-              cp web/mockServiceWorker.js dist/
-            elif [ -f public/mockServiceWorker.js ]; then
-              cp public/mockServiceWorker.js dist/
-            fi
+            for f in web/mockServiceWorker.js public/mockServiceWorker.js; do
+              if [ -f "$f" ]; then cp "$f" dist/; fi
+            done
           fi
 
-      - name: Add SPA 404 fallback
+      - name: Add SPA 404.html
         run: |
-          if [ ! -f dist/404.html ]; then
-            cp dist/index.html dist/404.html
-          fi
+          [ -f dist/404.html ] || cp dist/index.html dist/404.html
 
-      - name: Upload GitHub Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
