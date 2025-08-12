@@ -21,8 +21,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # Expo sometimes reads git metadata; give it full history to avoid warnings.
           fetch-depth: 0
+
+      # Fix: avoid "fatal: detected dubious ownership" (exit code 128)
+      - name: Mark workspace as safe Git directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -33,10 +36,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build (Expo web export with relative URLs)
+      - name: Build (Expo export with relative URLs)
+        env:
+          CI: true
         run: npx expo export --platform web --output-dir dist --public-url ./
 
-      - name: Ensure MSW worker is copied to dist
+      - name: Ensure MSW worker is present
         run: |
           set -eux
           if [ ! -f dist/mockServiceWorker.js ]; then
