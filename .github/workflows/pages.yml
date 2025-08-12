@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Robust fix for "fatal: detected dubious ownership" (exit 128)
+      # Avoid "fatal: detected dubious ownership" (exit 128)
       - name: Make git dirs safe + show config
         shell: bash
         run: |
@@ -43,19 +43,6 @@ jobs:
           node-version: 20
           cache: npm
 
-      # Quick env + tool smoke test
-      - name: Diagnose environment
-        shell: bash
-        run: |
-          set -eux
-          which git
-          git --version
-          node -v
-          npm -v
-          ls -al
-          echo "whoami: $(whoami)"
-          echo "pwd: $(pwd)"
-
       - name: Install deps (CI guards)
         env:
           HUSKY: 0
@@ -67,7 +54,7 @@ jobs:
       - name: Build (Expo export)
         env:
           CI: true
-        run: npx expo export --platform web --output-dir dist --public-url ./
+        run: npx expo export --platform web --output-dir dist
 
       - name: Ensure MSW worker exists
         run: |
