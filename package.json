@@ -1,14 +1,18 @@
 {
   "name": "trade-journal",
   "version": "1.0.0",
+  "private": true,
+
+  "homepage": "https://egantech05.github.io/trade-journal",
+
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-   "web:export": "npx expo export --platform web --output-dir dist",
-    "deploy": "npm run web:export && gh-pages -d dist"
+    "build:web": "expo export --platform web --output-dir dist"
   },
+
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
     "@expo/vector-icons": "^14.1.0",
@@ -37,18 +41,13 @@
     "react-native-web": "^0.20.0",
     "react-select": "^5.10.2"
   },
+
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~19.0.10",
-    "gh-pages": "^6.3.0",
     "msw": "^2.10.4",
     "typescript": "~5.8.3"
   },
-  "private": true,
-  "msw": {
-    "workerDirectory": [
-      "web",
-      "public"
-    ]
-  }
+
+  "msw": { "workerDirectory": ["web", "public"] }
 }
