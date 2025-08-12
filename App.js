@@ -17,7 +17,7 @@ export default function App() {
       worker
         .start({
           onUnhandledRequest: 'bypass',
-          serviceWorker: { url: '/mockServiceWorker.js' }, 
+          serviceWorker: { url: './mockServiceWorker.js' }, 
         })
         .then(() => setReady(true))
         .catch((e) => {
