@@ -22,9 +22,9 @@ export default function Icon({ name, size = 28, color = '#fff', style }) {
       width={size}
       height={size}
       color="white"
-      style={{ display: 'block', ...style }}
+      style={{ display: 'block', margin: '12px 0', filter:'invert(1)', ...style }} 
       draggable={false}
-      margin="10"
+      
     />
   );
 }
