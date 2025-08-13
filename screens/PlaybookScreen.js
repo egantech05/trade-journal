@@ -31,7 +31,7 @@ export default function PlaybookScreen({ navigation }) {
     
       <View style={styles.sidebar}>
         <TouchableOpacity onPress={() => navigation.navigate('History')}>
-          <Ionicons name="history" size={28} color="#fff" style={styles.icon} />
+          <MaterialIcons name="history" size={28} color="#fff" style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Playbook')}>
           <Entypo name="open-book" size={28} color="#fff" style={styles.icon} />
@@ -48,7 +48,7 @@ export default function PlaybookScreen({ navigation }) {
         <ScrollView contentContainerStyle={styles.cardContainer}>
           
           <TouchableOpacity style={styles.addCard} onPress={() => setPlaybookModalVisible(true)}>
-            <Ionicons name="add" size={40} color="#fff" />
+            <MaterialIcons name="add" size={40} color="#fff" />
           </TouchableOpacity>
 
           

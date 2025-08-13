@@ -236,7 +236,7 @@ export default function DashboardScreen({ navigation }) {
       {/* Sidebar */}
       <View className="sidebar" style={styles.sidebar}>
         <TouchableOpacity onPress={() => navigation.navigate('History')}>
-          <Ionicons name="history" size={28} color="#fff" style={styles.icon} />
+          <MaterialIcons name="history" size={28} color="#fff" style={styles.icon} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => setModalVisible(true)}>
