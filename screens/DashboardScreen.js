@@ -1,7 +1,7 @@
 // screens/DashboardScreen.js
 import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import MIcon from '../components/MIcon';
+import Icon from '../components/Icon';
 import { BarChart, LineChart } from 'react-native-chart-kit';
 import TradeModal from '../components/TradeModal';
 import DatePicker from 'react-datepicker';
@@ -236,11 +236,11 @@ export default function DashboardScreen({ navigation }) {
       {/* Sidebar */}
       <View className="sidebar" style={styles.sidebar}>
         <TouchableOpacity onPress={() => navigation.navigate('History')}>
-          <MIcon name="history" size={28} color="#fff" style={styles.icon} />
+          <Icon name="time-outline" size={28} style={styles.icon} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => setModalVisible(true)}>
-          <MIcon name="add_circle" size={30} color="#fff" style={styles.icon} />
+          <Icon name="add-circle-outline" size={30} style={styles.icon} />
         </TouchableOpacity>
       </View>
 
