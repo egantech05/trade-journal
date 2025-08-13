@@ -6,7 +6,7 @@ const rel = (path) => new URL(path.startsWith('./') ? path : `./${path}`, docume
 
 // Your SVGs live in public/icons/, which are copied to dist/icons/
 const ICONS = {
-  history: rel('icons/time-outline.svg'),
+  'time-outline': rel('icons/time-outline.svg'),
   'add-circle-outline': rel('icons/add-circle-outline.svg'),
 };
 
