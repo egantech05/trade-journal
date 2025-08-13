@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Ionicons, Entypo, MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import TradeModal from '../components/TradeModal';
 import EditRemarksModal from '../components/EditRemarksModal';
 import RemoveEntryModal from '../components/RemoveEntryModal';
@@ -507,7 +507,7 @@ export default function HistoryScreen({ navigation }) {
 
       <View style={styles.sidebar}>
         <TouchableOpacity onPress={() => navigation.navigate('History')}>
-          <Ionicons name="time-outline" size={28} color="#fff" style={styles.icon} />
+          <Ionicons name="history" size={28} color="#fff" style={styles.icon} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => setModalVisible(true)}>

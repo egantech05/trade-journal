@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Ionicons, Entypo, MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import AddPlaybookModal from '../components/AddPlaybookModal';
 import TradeModal from '../components/TradeModal'; 
 
@@ -31,7 +31,7 @@ export default function PlaybookScreen({ navigation }) {
     
       <View style={styles.sidebar}>
         <TouchableOpacity onPress={() => navigation.navigate('History')}>
-          <Ionicons name="time-outline" size={28} color="#fff" style={styles.icon} />
+          <Ionicons name="history" size={28} color="#fff" style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Playbook')}>
           <Entypo name="open-book" size={28} color="#fff" style={styles.icon} />
