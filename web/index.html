@@ -2,40 +2,79 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#1e1e1e" />
+    <meta name="color-scheme" content="dark light" />
     <title>Trade Journal</title>
 
-    <!-- Vector icon fonts for web build -->
-<link rel="preload" as="font" type="font/ttf" crossorigin
-      href="https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf">
-<link rel="preload" as="font" type="font/ttf" crossorigin
-      href="https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/Entypo.ttf">
-<link rel="preload" as="font" type="font/ttf" crossorigin
-      href="https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.ttf">
-
-<style>
-@font-face {
-  font-family: "Ionicons";
-  src: url("https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf")
-       format("truetype");
-  font-style: normal; font-weight: 400; font-display: swap;
-}
-@font-face {
-  /* react-native-vector-icons uses MaterialIcons (no space) */
-  font-family: "MaterialIcons";
-  src: url("https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.ttf")
-       format("truetype");
-  font-style: normal; font-weight: 400; font-display: swap;
-}
-@font-face {
-  font-family: "Entypo";
-  src: url("https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/Entypo.ttf")
-       format("truetype");
-  font-style: normal; font-weight: 400; font-display: swap;
-}
-</style>
-   
+    <!-- Keep all asset paths relative for GitHub Pages subpath -->
     <base href="./" />
+
+    <!-- Vector icon fonts for React Native Web / @expo/vector-icons -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/ttf"
+      crossorigin
+      href="https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/ttf"
+      crossorigin
+      href="https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/Entypo.ttf"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/ttf"
+      crossorigin
+      href="https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.ttf"
+    />
+
+    <style>
+      /* RN Web looks these up by family name */
+      @font-face {
+        font-family: "Ionicons";
+        src: url("https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf")
+          format("truetype");
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Entypo";
+        src: url("https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/Entypo.ttf")
+          format("truetype");
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        /* react-native-vector-icons uses this name (no space) */
+        font-family: "MaterialIcons";
+        src: url("https://cdn.jsdelivr.net/npm/@expo/vector-icons@14.1.0/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.ttf")
+          format("truetype");
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+      }
+
+      /* Make the app fill the page and match your dark theme */
+      html,
+      body,
+      #root {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background: #1e1e1e;
+      }
+    </style>
   </head>
   <body>
     <noscript>Enable JavaScript to run this app.</noscript>
