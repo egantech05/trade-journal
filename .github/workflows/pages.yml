@@ -23,19 +23,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Avoid "fatal: detected dubious ownership" (exit 128)
       - name: Make git dirs safe + show config
         shell: bash
         run: |
           set -eux
           git --version
-          echo "WS=$GITHUB_WORKSPACE"
           git config --global --add safe.directory "$GITHUB_WORKSPACE" || true
           git config --global --add safe.directory /github/workspace || true
           git config --global --add safe.directory '*' || true
           git config --global --list --show-origin || true
-          git rev-parse --show-toplevel || true
-          git status || true
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -68,6 +64,12 @@ jobs:
       - name: Add SPA 404.html
         run: |
           [ -f dist/404.html ] || cp dist/index.html dist/404.html
+
+      # 👇 important: serve the _expo folder on GitHub Pages
+      - name: Disable Jekyll (serve _expo/)
+        run: |
+          echo > dist/.nojekyll
+          ls -la dist
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
