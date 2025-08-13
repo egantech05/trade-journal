@@ -34,7 +34,7 @@ export default function PlaybookScreen({ navigation }) {
           <MaterialIcons name="history" size={28} color="#fff" style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Playbook')}>
-          <Entypo name="open-book" size={28} color="#fff" style={styles.icon} />
+          <MaterialIcons name="library-book" size={28} color="#fff" style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setTradeModalVisible(true)}>
           <MaterialIcons name="add-circle-outline" size={30} color="#fff" style={styles.icon} />
