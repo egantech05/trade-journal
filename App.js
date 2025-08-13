@@ -4,39 +4,51 @@ import { Platform, View, Text, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import StackNavigator from './navigation/StackNavigator';
 
+const isWeb = Platform.OS === 'web';
+
 export default function App() {
-  const [ready, setReady] = useState(Platform.OS !== 'web');
-  const [fontsReady, setFontsReady] = useState(Platform.OS !== 'web');
+  // MSW ready (web) and icon fonts ready (native)
+  const [ready, setReady] = useState(!isWeb);
+  const [fontsReady, setFontsReady] = useState(!isWeb);
 
   useEffect(() => {
-    if (Platform.OS !== 'web') return;
+    // ---- WEB: start MSW only; DO NOT load icon TTFs via expo-font ----
+    if (isWeb) {
+      (async () => {
+        try {
+          const { worker } = require('./src/mocks/browser');
+          await worker.start({
+            onUnhandledRequest: 'bypass',
+            serviceWorker: { url: './mockServiceWorker.js' },
+          });
+        } catch (e) {
+          console.warn('MSW failed to start', e);
+        } finally {
+          setReady(true);
+          // Icons on web come from <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+          setFontsReady(true);
+        }
+      })();
+      return;
+    }
 
+    // ---- NATIVE: preload vector-icon fonts with expo-font ----
     (async () => {
-      // 1) Start MSW
-      try {
-        const { worker } = require('./src/mocks/browser');
-        await worker.start({
-          onUnhandledRequest: 'bypass',
-          serviceWorker: { url: './mockServiceWorker.js' },
-        });
-        setReady(true);
-      } catch (e) {
-        console.error('MSW failed to start', e);
-        setReady(true);
-      }
-
-      // 2) Load icon fonts
       try {
         const Font = await import('expo-font');
         const icons = await import('@expo/vector-icons');
         await Font.loadAsync({
- 
           ...icons.MaterialIcons.font,
+          // add more if you ever use them natively, e.g. Ionicons/Entypo
+          // ...icons.Ionicons.font,
+          // ...icons.Entypo.font,
         });
       } catch (e) {
-        console.warn('Icon font load failed:', e);
+        console.warn('Icon font load failed (native):', e);
+      } finally {
+        setFontsReady(true);
+        setReady(true);
       }
-      setFontsReady(true);
     })();
   }, []);
 
