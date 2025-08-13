@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MIcon from '../components/MIcon';
 import AddPlaybookModal from '../components/AddPlaybookModal';
 import TradeModal from '../components/TradeModal'; 
 
@@ -31,13 +31,13 @@ export default function PlaybookScreen({ navigation }) {
     
       <View style={styles.sidebar}>
         <TouchableOpacity onPress={() => navigation.navigate('History')}>
-          <MaterialIcons name="history" size={28} color="#fff" style={styles.icon} />
+          <MIcon name="history" size={28} color="#fff" style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Playbook')}>
-          <MaterialIcons name="library-book" size={28} color="#fff" style={styles.icon} />
+          <MIcon name="menu_book" size={28} color="#fff" style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setTradeModalVisible(true)}>
-          <MaterialIcons name="add-circle-outline" size={30} color="#fff" style={styles.icon} />
+          <MIcon name="add_circle" size={30} color="#fff" style={styles.icon} />
         </TouchableOpacity>
       </View>
 
