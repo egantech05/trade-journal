@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#3a3a3a',
     alignItems: 'center',
     paddingTop: 10,
+    zIndex: 1000,
   },
   icon: {
     marginVertical: 20,
