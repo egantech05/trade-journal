@@ -1,43 +1,27 @@
 // components/Icon.web.js
-import * as React from 'react';
-import { Asset } from 'expo-asset';
+import React from 'react';
 
-// Import the SVG modules
-import AddCircle from '../assets/add-circle-outline.svg';
-import TimeOutline from '../assets/time-outline.svg';
+// Resolve a URL relative to the page's <base href="./"> (works on GH Pages subpaths)
+const rel = (path) => new URL(path.startsWith('./') ? path : `./${path}`, document.baseURI).href;
 
-// Map the names you use in screens -> modules
-const sources = {
-  'add-circle-outline': AddCircle,
-  'time-outline': TimeOutline,
+// Your SVGs live in public/icons/, which are copied to dist/icons/
+const ICONS = {
+  history: rel('icons/time-outline.svg'),
+  'add-circle-outline': rel('icons/add-circle-outline.svg'),
 };
 
-// turn whatever Metro/Webpack gives us into a URL string
-function toUrl(mod) {
-  if (!mod) return null;
-  if (typeof mod === 'string') return mod;            // already a URL
-  if (mod.default && typeof mod.default === 'string') // ESM default export is URL
-    return mod.default;
-  if (mod.src && typeof mod.src === 'string')         // some bundlers export {src}
-    return mod.src;
-
-  // Expo/Metro asset module -> resolve real URL
-  try {
-    return Asset.fromModule(mod).uri;
-  } catch {
-    return null;
-  }
-}
-
-export default function Icon({ name, size = 28, style, alt }) {
-  const src = toUrl(sources[name]);
+export default function Icon({ name, size = 28, color = '#fff', style }) {
+  const src = ICONS[name];
   if (!src) return null;
 
+  // If you want tinting, use CSS filters or embed paths; for now render as-is.
   return (
     <img
       src={src}
-      alt={alt || name}
-      style={{ width: size, height: size, display: 'inline-block', ...style }}
+      alt=""
+      width={size}
+      height={size}
+      style={{ display: 'block', ...style }}
       draggable={false}
     />
   );
