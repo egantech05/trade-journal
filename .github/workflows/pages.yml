@@ -28,10 +28,13 @@ jobs:
         run: |
           set -eux
           git --version
+          echo "WS=$GITHUB_WORKSPACE"
           git config --global --add safe.directory "$GITHUB_WORKSPACE" || true
           git config --global --add safe.directory /github/workspace || true
           git config --global --add safe.directory '*' || true
           git config --global --list --show-origin || true
+          git rev-parse --show-toplevel || true
+          git status || true
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -52,6 +55,15 @@ jobs:
           CI: true
         run: npx expo export --platform web --output-dir dist
 
+      # NEW: rewrite absolute asset URLs -> relative
+      - name: Make asset URLs relative
+        shell: bash
+        run: |
+          set -e
+          find dist -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \) \
+            -exec sed -i 's|/_expo/|./_expo/|g' {} +
+          grep -n "./_expo/" dist/index.html || true
+
       - name: Ensure MSW worker exists
         run: |
           set -eux
@@ -65,11 +77,9 @@ jobs:
         run: |
           [ -f dist/404.html ] || cp dist/index.html dist/404.html
 
-      # 👇 important: serve the _expo folder on GitHub Pages
+      # NEW: disable Jekyll so /_expo/** is served
       - name: Disable Jekyll (serve _expo/)
-        run: |
-          echo > dist/.nojekyll
-          ls -la dist
+        run: echo > dist/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
