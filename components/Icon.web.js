@@ -21,8 +21,10 @@ export default function Icon({ name, size = 28, color = '#fff', style }) {
       alt=""
       width={size}
       height={size}
+      color="white"
       style={{ display: 'block', ...style }}
       draggable={false}
+      margin="10"
     />
   );
 }
