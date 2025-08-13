@@ -30,8 +30,7 @@ export default function App() {
         const Font = await import('expo-font');
         const icons = await import('@expo/vector-icons');
         await Font.loadAsync({
-          ...icons.Ionicons.font,
-          ...icons.Entypo.font,
+ 
           ...icons.MaterialIcons.font,
         });
       } catch (e) {
