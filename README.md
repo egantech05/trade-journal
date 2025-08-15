@@ -13,20 +13,21 @@ This application was initially developed using React Native Expo. I had to perfo
 I developed this using ChatGPT. Initially I tried by pasting screenshots of my UI which I designed on Figma. However, I was not satisfy with the results. So, I end up write the code for the UI then I will ask ChatGPT on how to add certain component and functions. I didnt use where ChatGPT just write the whole code because most of the time it will change things that I didnt ask them to. I was just ask for certain components, review it only then I post it into my code. It was a quite interesting journey developing this application.
 
 ![Dashboard](assets/DashboardScreen.png)
+![List of Trades](assets/ListTrades.png)
 ![Historical](assets/HistoryScreen.png)
 ![Add Trade](assets/AddTrades.png)
 
 Tech Stack
-App: React Native (Expo), React Native Web
-Charts: react-native-chart-kit (requires v6.14.0+)
-SVG: react-native-svg
-Calendar: react-datepicker (web)
-State/Utilities: React hooks
-Data: Mock API for GitHub version / mySQL for my local desktop version
+/n App: React Native (Expo), React Native Web
+/n Charts: react-native-chart-kit (requires v6.14.0+)
+/n SVG: react-native-svg
+/n Calendar: react-datepicker (web)
+/n State/Utilities: React hooks
+/n Data: Mock API for GitHub version / mySQL for my local desktop version
 
-Future improvement:
-User able to assign each trade to a specfic playbook that user creates.
-User able to specify symbol/instrument/currency that they are trading on each trade.
-More overall analysis on the Dashboard page.
-Customize analysis on their historical data.
+/n Future improvement:
+/n User able to assign each trade to a specfic playbook that user creates.
+/n User able to specify symbol/instrument/currency that they are trading on each trade.
+/n More overall analysis on the Dashboard page.
+/n Customize analysis on their historical data.
 
