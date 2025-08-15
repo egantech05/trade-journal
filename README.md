@@ -1,5 +1,6 @@
 
-<h1>[Checkout tbuuk.]([https://example.com](https://egantech05.github.io/trade-journal/) "tbuuk-Trading Journal")</h1>
+<h1>tbuuk.-Trading Journal</h1>
+<h2>https://example.com](https://egantech05.github.io/trade-journal/</h2>
 
 A minimalist trading journal dashboard built with React Native (Expo) and react-native-chart-kit.
 It visualizes your performance with a cumulative equity curve, a color-coded weekly P/L bar chart, and a monthly calendar heatmap.
