@@ -10,6 +10,12 @@ Tbuuk was developed based on layering trading style. When a certain setup trigge
 
 This application was initially developed using React Native Expo. I had to perform a lot of adjustment so that I could publish this on GitHub. It was also originally develop to use mySQL on my local device. So I tweaked a little bit for this project I published on GitHub with some dummy data.
 
+I developed this using ChatGPT. Initially I tried by pasting screenshots of my UI which I designed on Figma. However, I was not satisfy with the results. So, I end up write the code for the UI then I will ask ChatGPT on how to add certain component and functions. I didnt use where ChatGPT just write the whole code because most of the time it will change things that I didnt ask them to. I was just ask for certain components, review it only then I post it into my code. It was a quite interesting journey developing this application.
+
+![Dashboard](assets/DashboardScreen.png)
+![Historical](assets/HistoryScreen.png)
+![Add Trade](assets/AddTrades.png)
+
 Tech Stack
 App: React Native (Expo), React Native Web
 Charts: react-native-chart-kit (requires v6.14.0+)
