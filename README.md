@@ -17,6 +17,8 @@ I developed this using ChatGPT. Initially I tried by pasting screenshots of my U
 ![Historical](assets/HistoryScreen.png)
 ![Add Trade](assets/AddTrades.png)
 
+I improved a few things that was not uploaded here such as gradient for Overall Performance Chart and improved how the bar chart looks like.
+
 Tech Stack <br>
 App: React Native (Expo), React Native Web <br>
 Charts: react-native-chart-kit (requires v6.14.0+) <br>
