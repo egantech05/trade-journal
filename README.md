@@ -17,17 +17,17 @@ I developed this using ChatGPT. Initially I tried by pasting screenshots of my U
 ![Historical](assets/HistoryScreen.png)
 ![Add Trade](assets/AddTrades.png)
 
-Tech Stack
-/n App: React Native (Expo), React Native Web
-/n Charts: react-native-chart-kit (requires v6.14.0+)
-/n SVG: react-native-svg
-/n Calendar: react-datepicker (web)
-/n State/Utilities: React hooks
-/n Data: Mock API for GitHub version / mySQL for my local desktop version
+Tech Stack <br>
+App: React Native (Expo), React Native Web <br>
+/n Charts: react-native-chart-kit (requires v6.14.0+) <br>
+/n SVG: react-native-svg <br>
+/n Calendar: react-datepicker (web) <br>
+/n State/Utilities: React hooks <br>
+/n Data: Mock API for GitHub version / mySQL for my local desktop version <br>
 
-/n Future improvement:
-/n User able to assign each trade to a specfic playbook that user creates.
-/n User able to specify symbol/instrument/currency that they are trading on each trade.
-/n More overall analysis on the Dashboard page.
-/n Customize analysis on their historical data.
+/n Future improvement: <br>
+/n User able to assign each trade to a specfic playbook that user creates. <br>
+/n User able to specify symbol/instrument/currency that they are trading on each trade. <br>
+/n More overall analysis on the Dashboard page. <br>
+/n Customize analysis on their historical data. <br>
 
